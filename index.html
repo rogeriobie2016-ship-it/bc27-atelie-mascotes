@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ateliê de Mascotes BC27</title>
+<meta name="description" content="Ferramenta da BC27 para escolher o mascote folclórico: compare personagens, teste estilo e figurino e exporte foto e 3D.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ateliê de Mascotes BC27">
+<meta property="og:description" content="Ferramenta da BC27 para escolher o mascote folclórico: compare personagens, teste estilo e figurino e exporte foto e 3D.">
+<meta property="og:image" content="https://rogeriobie2016-ship-it.github.io/bc27-atelie-mascotes/assets/img/og-atelie.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#03633B">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/fontes.css">
+<link rel="stylesheet" href="assets/css/atelie.css">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="s-skip" href="#conteudo">Pular para o conteúdo</a>
+<div class="s-shell">
+  <div class="s-top">
+    <button class="s-burger" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <b>Ateliê de Mascotes</b><span>BC27</span>
+  </div>
+
+  <nav class="s-side" id="sidebar" aria-label="Seções do ateliê">
+    <a class="s-logo" data-r="atelie" aria-label="Brazil Conference, abrir o ateliê"><img src="assets/img/logo-bc.svg" alt="" width="40" height="40"><span class="s-logo-txt"><b>Brazil Conference</b><small>BC27 · Mascotes</small></span></a>
+    <div class="s-nav" id="sideNav"></div>
+    <div class="s-foot"><span class="s-ver" id="sideVer"></span><button class="s-reset" type="button">Restaurar padrão</button></div>
+  </nav>
+  <div class="s-scrim" id="scrim" hidden></div>
+
+  <main class="s-main" id="conteudo" tabindex="-1">
+    <nav class="s-crumbs" aria-label="Trilha de navegação"><ol id="crumbs"></ol></nav>
+
+    <section class="s-page" data-page="inicio" hidden>
+      <div class="s-wrap">
+        <div class="s-hero">
+          <span class="s-eyebrow">BC27 · Social Media &amp; Growth · mascote folclórico</span>
+          <h1>Ateliê de Mascotes</h1>
+          <p>Onde a equipe da BC27 escolhe o mascote: compara personagens do folclore, da fauna e da cultura popular, testa estilo e figurino e leva o escolhido para o Blender.</p>
+        </div>
+        <div class="s-sec">
+          <h2 class="s-h2">Comece por aqui</h2>
+          <div class="s-start">
+            <a data-r="comparar-duplas"><b>Comparar as 4 duplas</b><span>Lado a lado, no mesmo estilo</span></a>
+            <a data-r="atelie-do-zero"><b>Criar um mascote do zero</b><span>Passo a passo em 8 etapas</span></a>
+            <a data-r="exportar"><b>Baixar a foto ou o 3D</b><span>PNG em 1x e 2x, glTF para o Blender</span></a>
+          </div>
+        </div>
+        <div class="s-sec">
+          <h2 class="s-h2">Áreas</h2>
+          <div class="s-grid">
+            <a class="s-card" data-r="atelie-duplas"><span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="8" cy="9" r="3.5"/><circle cx="16" cy="9" r="3.5"/><path d="M2.5 20c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5M10.5 20c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5"/></svg></span><b>Duplas</b><p>Compare pares prontos: um personagem para gala e parceiros, outro para gincana e redes.</p><span class="s-meta">4 duplas</span></a>
+            <a class="s-card" data-r="atelie-folclore"><span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3c3 3 4.5 6 4.5 9a4.5 4.5 0 0 1-9 0c0-3 1.5-6 4.5-9Z"/><path d="M12 14v7"/></svg></span><b>Folclore</b><p>Personagens das lendas brasileiras, do Boto ao Mapinguari.</p><span class="s-meta">14 personagens</span></a>
+            <a class="s-card" data-r="atelie-fauna"><span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 14c0-4 3.5-8 8-8 3 0 5 1.5 6 4l2.5 1-2.5 1.5c0 4-3 7.5-7 7.5-4 0-7-2.5-7-6Z"/><circle cx="15" cy="10" r="1"/></svg></span><b>Fauna</b><p>Bichos queridos do Brasil, fáceis de virar pelúcia e fantasia.</p><span class="s-meta">6 bichos</span></a>
+            <a class="s-card" data-r="atelie-cultura-popular"><span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9h18l-2 3H5Z"/><path d="M7 12v8M17 12v8M12 4v5"/></svg></span><b>Cultura popular</b><p>Festas, ofícios e tradições: passista, vaqueiro, rendeira e mais.</p><span class="s-meta">14 tipos</span></a>
+            <a class="s-card" data-r="atelie-fusao"><span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/></svg></span><b>Fusão</b><p>Um personagem neutro com uma peça de cada time que acende na gincana.</p><span class="s-meta">6 bases</span></a>
+            <a class="s-card" data-r="atelie-brincante"><span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8c3-2 13-2 16 0-1 6-4 10-8 10S5 14 4 8Z"/><path d="M9 11h.01M15 11h.01"/></svg></span><b>Brincante</b><p>Um só personagem que veste o folclore trocando de máscara.</p><span class="s-meta">17 máscaras</span></a>
+            <a class="s-card" data-r="atelie-do-zero"><span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><b>Começar do zero</b><p>Monte um personagem novo peça por peça: cabeça, corpo, cauda e cores.</p><span class="s-meta">8 etapas</span></a>
+            <a class="s-card" data-r="exportar"><span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span><b>Exportar e Blender</b><p>Foto do look em PNG e modelo 3D em glTF com ficha técnica.</p><span class="s-meta">PNG · glTF</span></a>
+            <a class="s-card" data-r="decisoes"><span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg></span><b>Decisões e times</b><p>O que já está decidido sobre o mascote e as cores dos quatro times.</p><span class="s-meta">4 times</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="s-page s-page--studio" data-page="atelie">
+      <p class="s-mobile-note">Melhor usado no computador. No celular dá para ver e girar os bonecos, mas a edição fica apertada.</p>
+<div class="app">
+  <header>
+    <div class="brand">
+      <span class="eyebrow">BC27 · Social Media &amp; Growth · mascote folclórico</span>
+      <h1>Ateliê de Mascotes</h1>
+    </div>
+    <div class="seg dim" id="dimSeg" role="group" aria-label="Dimensão"><button data-dim="3d">3D</button><button data-dim="2d">2D chapado</button></div>
+    <div class="dirs" id="dirs" role="group" aria-label="Direção"></div>
+    <div class="pairs" id="pairs" role="group" aria-label="Dupla"></div>
+  </header>
+
+  <aside class="panel editor" id="editor" aria-label="Editor"></aside>
+
+  <section class="stage-wrap" aria-label="Palco 3D">
+    <div class="stage" id="stage">
+      <canvas id="cv" aria-label="Mascotes em 3D"></canvas>
+      <canvas id="ov" aria-hidden="true"></canvas>
+      <div class="hud"><span id="hudWho">Editando</span><span>arraste para girar · role para aproximar · toque para escolher</span></div>
+      <div class="msg" id="stageMsg" hidden>Não foi possível abrir o 3D neste navegador.</div>
+    </div>
+    <div class="toolbar">
+      <select id="styleSel" class="sel" aria-label="Estilo"><option value="vinil">3D vinil</option><option value="cartoon3d">Cartoon 3D</option><option value="cartoon2d">Cartoon 2D</option><option value="anime">Anime</option><option value="chibi">Chibi</option><option value="massinha">Massinha</option><option value="pelucia">Pelúcia</option><option value="desenho">Desenho (traço)</option><option value="aquarela">Aquarela</option></select>
+      <div class="seg" id="frameSeg" role="group" aria-label="Moldura"><button data-frame="livre">Livre</button><button data-frame="quadrinho">Quadrinho</button><button data-frame="card">Card</button></div>
+      <select id="scenSel" class="sel" aria-label="Cenário"><option value="liso">Cenário liso</option><option value="saojoao">São João</option><option value="carnaval">Carnaval</option><option value="amazonia">Amazônia</option><option value="sertao">Sertão</option><option value="calcadao">Calçadão</option></select>
+      <span class="lbl">Fundo</span><div class="bgs" id="bgs"></div>
+      <div class="seg" id="camSeg"><button data-cam="corpo">Corpo</button><button data-cam="close">Close</button><button data-cam="costas">Costas</button></div>
+      <button class="tg" id="spinBtn">Girar sozinho</button>
+      <button class="btn" id="undoBtn">Desfazer</button>
+      <button class="btn" id="randBtn">Aleatório</button>
+    </div>
+  </section>
+
+  <aside class="panel ficha" id="ficha" aria-label="Ficha técnica"></aside>
+</div>
+<div class="toast" id="toast" hidden></div>
+    </section>
+
+    <section class="s-page" data-page="comparar" hidden>
+      <div class="s-wrap s-wrap--wide">
+        <div class="s-head"><h1>Comparar duplas</h1><p>As 4 duplas lado a lado, com os personagens como estão no seu ateliê. Troque o estilo e as quatro mudam juntas.</p></div>
+        <div class="s-cmp-bar">
+          <label for="cmpStyle">Estilo</label><select id="cmpStyle" class="sel"></select>
+          <button class="btn" id="cmpRefresh" type="button">Atualizar</button>
+          <button class="btn primary" id="cmpSheet" type="button" disabled>Baixar prancha (PNG)</button>
+          <span class="s-cmp-status" id="cmpStatus" role="status"></span>
+        </div>
+        <div class="s-cmp-grid" id="cmpGrid"></div>
+      </div>
+    </section>
+
+    <section class="s-page" data-page="como-usar" hidden>
+      <div class="s-wrap">
+        <div class="s-head"><h1>Como usar</h1><p>O ateliê serve para decidir personagem, estilo e figurino antes de encomendar a arte final. Os bonecos são formas simples feitas para comparar, não para publicar.</p></div>
+        <ol class="s-steps">
+          <li><span><b>Escolha a direção</b>No menu, abra Duplas, Folclore, Fauna, Cultura popular, Fusão, Brincante ou Começar do zero. Para ver as 4 duplas juntas, abra Comparar duplas.</span></li>
+          <li><span><b>Escolha quem editar</b>Nas duplas, toque no boneco no palco ou use os botões no alto do painel da esquerda.</span></li>
+          <li><span><b>Ajuste as peças</b>No painel da esquerda: corpo, rosto, roupa, chapéu, time, pose e objeto.</span></li>
+          <li><span><b>Troque o estilo</b>No topo, escolha 3D ou 2D chapado. Na barra embaixo do palco, o estilo (vinil, cartoon, anime, massinha e outros).</span></li>
+          <li><span><b>Monte a cena</b>Escolha moldura (Livre, Quadrinho ou Card), cenário e cor de fundo.</span></li>
+          <li><span><b>Salve e compare</b>Na ficha técnica, use Salvar look para guardar a versão e voltar a ela depois.</span></li>
+          <li><span><b>Leve adiante</b>Baixe a foto em PNG ou o 3D em .zip para o Blender.</span></li>
+        </ol>
+        <div class="s-sec">
+          <h2 class="s-h2">Controles do palco</h2>
+          <div class="s-box"><p>Arraste para girar, role ou faça pinça para aproximar, toque para escolher o personagem. <b>Desfazer</b> volta o último ajuste e <b>Aleatório</b> sorteia peças para dar ideias.</p></div>
+        </div>
+        <div class="s-sec">
+          <h2 class="s-h2">Seus ajustes</h2>
+          <div class="s-box"><p>Tudo o que você muda fica salvo só neste navegador. Outra pessoa que abrir o link vê a versão padrão. Para começar de novo, use o botão abaixo (os looks salvos continuam).</p><button class="s-reset" type="button">Restaurar padrão</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="s-page" data-page="exportar" hidden>
+      <div class="s-wrap">
+        <div class="s-head"><h1>Exportar e Blender</h1><p>Os botões ficam na ficha técnica, à direita do palco (abaixo dele no celular), no bloco Levar adiante.</p></div>
+        <div class="s-sec">
+          <h2 class="s-h2">Foto do look (PNG)</h2>
+          <div class="s-box"><p><b>Foto 1x</b> sai no tamanho do palco na sua tela. <b>Foto 2x</b> sai com o dobro de pixels, para redes e impressão. Com a moldura Card, a foto traz só o card.</p><p>O nome do arquivo diz quem está na foto e o tamanho, por exemplo <code>bc27-look-cuca-boto-2400x1600.png</code>.</p></div>
+        </div>
+        <div class="s-sec">
+          <h2 class="s-h2">Modelo 3D (.zip)</h2>
+          <div class="s-box"><p>O .zip traz um arquivo glTF com os personagens na tela e um LEIA-ME com a ficha técnica (proporção, cores e peças).</p><p>No Blender: Arquivo, Importar, glTF 2.0, e escolha o arquivo <code>.gltf</code>. Cada peça vem com o nome do encaixe (corpo, cabeça, rosto, roupa, chapéu, time, objeto). Escala: 1 unidade = 1 metro.</p></div>
+        </div>
+        <div class="s-sec">
+          <h2 class="s-h2">Copiar ficha</h2>
+          <div class="s-box"><p>Copia a ficha técnica em texto para colar no briefing do ilustrador ou no Huly.</p></div>
+        </div>
+        <div class="s-sec">
+          <h2 class="s-h2">Limites</h2>
+          <ul class="s-rules"><li>Os bonecos são formas simples: servem para decidir personagem e estilo, não como arte final.</li><li>O modelo 3D é um rascunho de proporção e cores para o Blender, não um modelo pronto para animação.</li></ul>
+        </div>
+        <a class="s-cta" data-r="atelie-duplas">Abrir o ateliê</a>
+      </div>
+    </section>
+
+    <section class="s-page" data-page="decisoes" hidden>
+      <div class="s-wrap">
+        <div class="s-head"><h1>Decisões e times</h1><p>O que já foi decidido e vale para qualquer direção escolhida.</p></div>
+        <div class="s-sec">
+          <h2 class="s-h2">Regras do mascote</h2>
+          <ul class="s-rules">
+            <li>O mascote geral da BC27 não pode ser personagem de nenhum time.</li>
+            <li>A Cuca é jacaré, reitora de beca e capelo, com desenho próprio. Nada da versão da TV.</li>
+            <li>O Boto é anfitrião festeiro, nunca galã.</li>
+            <li>O Boi nunca usa vermelho com azul (as cores do Garantido e do Caprichoso).</li>
+            <li>Trajes de cultura popular são validados com quem vive a tradição antes de produzir.</li>
+          </ul>
+        </div>
+        <div class="s-sec">
+          <h2 class="s-h2">Os quatro times</h2>
+          <div class="s-table-wrap">
+            <table class="s-table">
+              <thead><tr><th scope="col">Time</th><th scope="col">Elemento</th><th scope="col">Cores</th></tr></thead>
+              <tbody>
+                <tr><td><b>Correnteza</b></td><td>Água</td><td><span class="s-sw"><i style="background:#1F3A6B"></i><i style="background:#D9A441"></i></span></td></tr>
+                <tr><td><b>Chama</b></td><td>Fogo</td><td><span class="s-sw"><i style="background:#E2572A"></i><i style="background:#F6B12B"></i></span></td></tr>
+                <tr><td><b>Mata</b></td><td>Terra</td><td><span class="s-sw"><i style="background:#1E5A33"></i><i style="background:#7DB063"></i></span></td></tr>
+                <tr><td><b>Vendaval</b></td><td>Ar</td><td><span class="s-sw"><i style="background:#C8202F"></i><i style="background:#2C5BB0"></i></span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="s-sec">
+          <h2 class="s-h2">Cores da BC</h2>
+          <div class="s-box"><p><span class="s-sw"><i style="background:#03633B"></i><i style="background:#15E888"></i><i style="background:#007EE5"></i><i style="background:#FBF99D"></i></span> Verde BC <code>#03633B</code>, verde vivo <code>#15E888</code>, azul <code>#007EE5</code> e amarelo <code>#FBF99D</code>. Fonte Bricolage Grotesque.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="s-page" data-page="nao-encontrada" hidden>
+      <div class="s-wrap">
+        <div class="s-head"><h1>Página não encontrada</h1><p>Esse endereço não existe no ateliê. Pode ser um link antigo ou digitado errado.</p></div>
+        <a class="s-cta" data-r="atelie">Abrir o ateliê</a>
+      </div>
+    </section>
+
+    <nav class="s-pager" id="pager" aria-label="Anterior e próximo"></nav>
+  </main>
+</div>
+
+<script src="assets/js/three.min.js"></script>
+<script src="assets/js/orbit-controls.js"></script>
+<script src="assets/js/room-environment.js"></script>
+<script src="assets/js/gltf-exporter.js"></script>
+<script src="assets/js/jszip.min.js"></script>
+<script src="assets/js/atelie-3d.js"></script>
+<script src="assets/js/atelie-app.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

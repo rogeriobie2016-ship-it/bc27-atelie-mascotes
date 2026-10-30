@@ -1,0 +1,76 @@
+ATELIÊ DE MASCOTES BC27
+Brazil Conference at Harvard & MIT, 13ª edição
+Versão v1.0, 29/10/2026
+
+O QUE É
+Site para a equipe da BC27 escolher o mascote folclórico: comparar personagens
+do folclore, da fauna e da cultura popular, testar estilo (3D e 2D) e figurino,
+e exportar a foto do look (PNG) e um rascunho 3D (glTF) para o Blender.
+Os bonecos são formas simples feitas para decidir. Não são arte final.
+
+A página inicial é o arquivo index.html, que abre direto no ateliê (Duplas).
+A página Comparar duplas mostra as 4 duplas lado a lado. Funciona sem servidor especial:
+toda a navegação usa endereços com # (por exemplo .../#/atelie-duplas),
+então nenhum link dá erro 404, mesmo atualizando a página.
+
+COMO VER NO COMPUTADOR, SEM PUBLICAR
+O 3D só funciona servido por um endereço (o navegador bloqueia algumas
+coisas abrindo o arquivo direto). O jeito mais simples:
+1. Abra um terminal dentro desta pasta.
+2. Rode: python -m http.server 8000
+3. Abra no navegador: http://localhost:8000
+
+COMO PUBLICAR NO CLOUDFLARE PAGES
+1. Entre em dash.cloudflare.com (a conta é grátis).
+2. No menu, abra Workers & Pages, clique em Create e escolha a aba Pages.
+3. Escolha "Upload assets" (enviar arquivos).
+4. Dê um nome ao projeto, por exemplo bc27-mascotes.
+5. Arraste a PASTA INTEIRA (a que tem o index.html), não o .zip e não
+   arquivos soltos.
+6. Clique em Deploy. O link sai no formato https://bc27-mascotes.pages.dev
+7. Depois de publicar, abra o index.html num editor de texto e troque
+   content="assets/img/og-atelie.png" pelo endereço completo,
+   por exemplo https://bc27-mascotes.pages.dev/assets/img/og-atelie.png.
+   Isso faz a prévia do link aparecer bonita no WhatsApp e no Slack.
+
+COMO LIMITAR O ACESSO A UMA LISTA DE EMAILS (CLOUDFLARE ACCESS)
+1. No painel da Cloudflare, abra Zero Trust (é grátis até 50 pessoas).
+2. Vá em Access, Applications, Add an application, Self-hosted.
+3. Em domínio, coloque o endereço do site (ex.: bc27-mascotes.pages.dev).
+4. Crie uma regra (policy) com Action "Allow" e Include "Emails".
+5. Cole os emails autorizados, um por linha, e salve.
+Quem não estiver na lista recebe um código por email e não entra.
+Atalho: no projeto do Pages, em Settings, existe a opção
+"Enable access policy" que já cria essa aplicação para você.
+
+COMO ATUALIZAR
+1. Gere a pasta nova.
+2. No projeto do Cloudflare Pages, clique em "Create new deployment".
+3. Suba a PASTA INTEIRA de novo, por cima. Nunca envie arquivos soltos:
+   os arquivos dependem uns dos outros e uma versão misturada quebra.
+
+ONDE MUDAR A VERSÃO
+Arquivo assets/js/site.js, linha logo no começo:
+  const SITE={versao:'v1.0',data:'29/10/2026',...}
+Troque a versão e a data. Elas aparecem no rodapé do menu lateral.
+
+ONDE TROCAR O LOGO
+O logo do menu e o ícone da aba são assets/img/logo-bc.svg e
+assets/img/favicon.svg (hoje um selo provisório "BC"). Substitua pelos
+arquivos oficiais da marca com o mesmo nome.
+
+O QUE TEM NA PASTA
+index.html            página única do site
+assets/css            estilos (fontes, ateliê e site)
+assets/js             three.js 0.147, JSZip 3.10.1 e o código do ateliê
+                      (tudo local, nada depende de internet)
+assets/fonts          Bricolage Grotesque e JetBrains Mono (.woff2)
+assets/img            logo, ícone e imagem de compartilhamento
+assets/video          vazia, reservada para vinhetas futuras
+
+OBSERVAÇÕES
+- Os ajustes que cada pessoa faz ficam só no navegador dela. O botão
+  "Restaurar padrão" (menu lateral e página Como usar) volta ao início.
+- A edição é melhor no computador. No celular dá para ver e girar.
+- Fontes: Bricolage Grotesque e JetBrains Mono, licença SIL Open Font.
+  three.js (MIT) e JSZip (MIT).
