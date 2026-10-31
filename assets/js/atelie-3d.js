@@ -96,7 +96,7 @@ const ZDEF={head:'humano',corpo:'humano',cauda:'nenhuma',pes:'shoe',maos:'hand',
 function zeroSP(s){const z={...ZDEF,...(s.z||{})},B={...CORPOS[z.corpo][1],headK:1.42,foot:z.pes,hand:z.maos,fur:z.pelo};
   if(z.cauda!=='nenhuma'&&!['serpente','sereia'].includes(z.corpo))B.tail=z.cauda;
   return {nome:s.nome,sub:'Começando do zero',role:'din',head:z.head,headOpt:{hairCol:z.cabelo,calm:!z.brilho},belly:z.barrigaOn,spots:z.manchas,glow:z.brilho,iris:z.olhos,pal:[{n:'Minha cor',skin:z.pele,belly:z.barriga,tail:z.pele,acc:z.barriga}],body:B}}
-const BASE_STATE={pecas:'delicada',lashes:false,head:1,height:1,body:1,color:0,expr:'feliz',outfit:'base',hat:'nenhum',team:'neutro',pose:'parado',prop:'nenhum',glasses:false,blush:true,mask:'nenhuma',lit:{correnteza:true,chama:true,mata:true,vendaval:true},cores:{}};
+const BASE_STATE={pecas:'delicada',lashes:false,head:1,height:1,body:1,color:0,expr:'feliz',outfit:'base',hat:'nenhum',team:'neutro',pose:'parado',prop:'nenhum',glasses:false,blush:true,mask:'nenhuma',lit:{correnteza:true,chama:true,mata:true,vendaval:true},cores:{},aj:{}};
 function defaultChar(id){return JSON.parse(JSON.stringify({...BASE_STATE,nome:SPECIES[id].nome,...SPECIES[id].def}))}
 
 const EXPR={
@@ -163,6 +163,11 @@ function tint(meshes,cols){cols=(cols||[]).slice(0,3);if(!cols.some(Boolean)||!m
       else if(m.userData.k)o.material=mat(c,m.userData.k);
       else{const k='tc'+m.uuid+c;o.material=MC[k]||(MC[k]=m.clone());o.material.color.set(c)}})})}
 function meshesOf(root){const a=[];root.traverse(o=>{if(o.isMesh)a.push(o)});return a}
+/* ---- ajuste livre de posição, giro e tamanho (cm, graus e %) ---- */
+const AJ0={x:0,y:0,z:0,ry:0,rx:0,rz:0,k:100};
+function ajOf(s,p){return {...AJ0,...((s.aj||{})[p]||{})}}
+function ajApply(o,a,u=1){const D=Math.PI/180;o.position.x+=a.x*.01*u;o.position.y+=a.y*.01*u;o.position.z+=a.z*.01*u;o.rotation.order='YXZ';o.rotation.set(a.rx*D,a.ry*D,a.rz*D);o.scale.multiplyScalar(a.k/100)}
+function pivotWrap(g){const b=new THREE.Box3().setFromObject(g),c=new THREE.Vector3();if(b.isEmpty())return g;b.getCenter(c);if(g.parent){g.parent.updateMatrixWorld(true);g.parent.worldToLocal(c)}const ch=[...g.children];ch.forEach(o=>o.position.sub(c));g.position.copy(c);return g}
 const TX={};
 function canvasTex(key,w,h,draw,rep){if(TX[key]!==undefined)return TX[key];
   if(typeof document==='undefined'){TX[key]=null;return null}
@@ -329,6 +334,7 @@ function mouthGroup(type,w){const g=new THREE.Group(),dk=mat('#3A1426','flat');
     const rim=new THREE.Mesh(new THREE.TorusGeometry(w,w*.1,8,28,Math.PI),dk);rim.rotation.z=Math.PI;rim.position.y=w*.25;g.add(rim)}
   if(type==='o'){g.add(new THREE.Mesh(new THREE.CircleGeometry(w*.42,24),dk));g.add(new THREE.Mesh(new THREE.TorusGeometry(w*.42,w*.09,8,24),dk))}
   return g}
+function oculosG(f){let g=f.getObjectByName('OCULOS');if(!g){g=new THREE.Group();g.name='OCULOS';f.add(g)}return g}
 function addFace(faceG,A,s,m,irisCol,ck=1){const E=EXPR[s.expr]||EXPR.feliz;
   const browM=A.browCol?mat(A.browCol,'skin'):m.skinD;
   A.eyes.forEach((e,i)=>{const side=A.eyes.length===1?0:(e.p[0]<0?-1:1),o=E.o[i]!==undefined?E.o[i]:E.o[0];
@@ -337,8 +343,8 @@ function addFace(faceG,A,s,m,irisCol,ck=1){const E=EXPR[s.expr]||EXPR.feliz;
     const bw=capsule(e.r*.17*ck*((MODE.sy&&MODE.sy.brow)||1),e.r*ck*(A.eyes.length===1?1.6:1.05),browM);
     const lift=(E.by||0)+(side>0?(E.byL||0):0);
     bw.rotation.z=Math.PI/2+(side||0)*(E.brow||0);bw.position.set(e.p[0],e.p[1]+e.r*ck*(1.45+lift),e.p[2]+e.r*.25);faceG.add(bw);
-    if(s.glasses){const gr=new THREE.Mesh(new THREE.TorusGeometry(e.r*1.45*ck,.008,10,40),mat('#1E2A24','gloss'));gr.position.set(e.p[0],e.p[1],e.p[2]+e.r*.55);faceG.add(gr)}});
-  if(s.glasses&&A.eyes.length===2){const [a,b]=A.eyes,br=new THREE.Mesh(new THREE.CylinderGeometry(.006,.006,Math.max(.01,Math.abs(b.p[0]-a.p[0])-a.r*2.9*ck),8),mat('#1E2A24','gloss'));br.rotation.z=Math.PI/2;br.position.set(0,a.p[1]+.005,a.p[2]+a.r*.6);faceG.add(br)}
+    if(s.glasses){const gr=new THREE.Mesh(new THREE.TorusGeometry(e.r*1.45*ck,.008,10,40),mat('#1E2A24','gloss'));gr.position.set(e.p[0],e.p[1],e.p[2]+e.r*.55);oculosG(faceG).add(gr)}});
+  if(s.glasses&&A.eyes.length===2){const [a,b]=A.eyes,br=new THREE.Mesh(new THREE.CylinderGeometry(.006,.006,Math.max(.01,Math.abs(b.p[0]-a.p[0])-a.r*2.9*ck),8),mat('#1E2A24','gloss'));br.rotation.z=Math.PI/2;br.position.set(0,a.p[1]+.005,a.p[2]+a.r*.6);oculosG(faceG).add(br)}
   if(s.blush&&E.blush)A.cheeks.forEach(c=>faceG.add(mesh(SPH(1),mat('#F2647E','blush'),c[0],c[1],c[2],.03,.018,.012)));
   return mouthGroup(E.mouth,(A.mouth.w)*(E.mw||1)*((MODE.sy&&MODE.sy.mouth)||1))}
 
@@ -433,7 +439,7 @@ function makeProp(type,T){const g=new THREE.Group();
   return g}
 
 /* ---- personagem completo ---- */
-function build(id,s,opt={}){const SY=opt.sy||STY.vinil;MODE.sy=SY;const ck=SY.eye;
+function build(id,s,opt={}){const SY=opt.sy||STY.vinil;const CO=s.cores||{};MODE.sy=SY;const ck=SY.eye;
   const SP=id==='zero'?zeroSP(s):(id==='fusao'&&s.base&&s.base!=='humano'&&SPECIES[s.base])?SPECIES[s.base]:SPECIES[id],B=SP.body,pal=SP.pal[s.color]||SP.pal[0],T={...TEAMS[s.team]||TEAMS.neutro,id:s.team},P=id.toUpperCase();
   const m={skin:mat(pal.skin,B.fur?'fur':SP.glow?'ember':'skin'),belly:mat(pal.belly||shade(pal.skin,.2),'skin'),dark:mat('#20141A','eye'),white:mat('#FFFDF7','gloss'),skinD:mat(shade(pal.skin,-.2),'skin')};m.lid=B.fur?mat(pal.skin,'skin'):m.skin;
   const w=s.body,h=s.height,legLen=B.legLen*h*SY.legs,L=B.torsoL*h,hipsY=legLen,O=s.outfit;
@@ -457,6 +463,7 @@ function build(id,s,opt={}){const SY=opt.sy||STY.vinil;MODE.sy=SY;const ck=SY.ey
   const headG=new THREE.Group();headG.name=P+'_cabeca'+(maskSp||mask!=='nenhuma'?'_mascara_'+mask:'');headG.position.y=hipsY+L+B.neck*h-.02;headG.scale.setScalar(hs);headG.add(H.g);root.add(headG);
   const faceG=new THREE.Group();faceG.name=P+'_rosto_'+s.expr;headG.add(faceG);
   const mouth=addFace(faceG,A,s,fm,iris,ck);
+  {const og=faceG.getObjectByName('OCULOS');if(og){og.name=P+'_oculos';root.updateMatrixWorld(true);pivotWrap(og);ajApply(og,ajOf(s,'oculos'),1/hs);tint(meshesOf(og),CO.oculos)}}
   if(A.mouth.body){mouth.position.set(0,hipsY+L*A.mouth.t,fz(L*A.mouth.t)+.01);mouth.name=P+'_boca_barriga';root.add(mouth)}
   else{mouth.position.set(A.mouth.p[0],A.mouth.p[1],A.mouth.p[2]+.006);faceG.add(mouth)}if(A.mouth.hide)mouth.visible=false;
 
@@ -472,7 +479,6 @@ function build(id,s,opt={}){const SY=opt.sy||STY.vinil;MODE.sy=SY;const ck=SY.ey
   const legM=m.skin;
   const footY=.075,thl=(legLen-footY)*.52,shl=(legLen-footY)*.48,legs={};
   const SHOES={gincana:['#FFFFFF','gloss'],gala:B.gala==='terno-branco'?['#F4EFE3','gloss']:['#1A1414','gloss'],chita:['#7A4A2A','skin'],junino:['#7A4A2A','skin'],frevo:['#FFFFFF','gloss'],vaqueiro:['#5A3A20','skin'],rendeira:['#7A4A2A','skin'],maracatu:['#E3AC40','gold'],baiana:['#FFFFFF','gloss'],cangaceiro:['#5A3A20','skin'],gaucho:['#1A1414','gloss'],carnaval:['#E3AC40','gold'],canarinho:['#FFFFFF','gloss']};
-  const CO=s.cores||{};
   let shoe=null;if(B.foot==='shoe'){const sd=SHOES[O]||(O==='base'&&SP.head==='humano'&&!['curupira','saci','fusao','iara'].includes(id)?['#7A4A2A','skin']:null);shoe=sd?mat(CO.sapato||sd[0],sd[1]):null}
   const legXs=B.legs===2?[-1,1]:B.legs===1?[0]:[];
   legXs.forEach(side=>{const lr=B.legR*w*1.14*(B.legs===1?1.2:1),hp=new THREE.Group();hp.name=P+'_perna'+(side<0?'_dir':side>0?'_esq':'');hp.position.set(side*B.hipR*w*.48,hipsY,0);root.add(hp);
@@ -575,15 +581,15 @@ function build(id,s,opt={}){const SY=opt.sy||STY.vinil;MODE.sy=SY;const ck=SY.ey
     [[c1,0,1],[c2,-.06,-1]].forEach(([mt,dy,sd])=>v1.add(new THREE.Mesh(taperTube([[sd*.05,ny+dy,-rr*.7],[sd*.16,ny-.06+dy,-rr-.1],[sd*.28,ny-.02+dy,-rr-.2],[sd*.4,ny-.12+dy,-rr-.24]],t=>.034*(1-t)+.012,28,10),mt)));root.add(v1)}}
 
   /* acessórios de time */
-  if(!fus){const tg=new THREE.Group();tg.name='TIME_'+s.team;root.add(tg);const has=t=>s.team===t||s.team==='fusao';
-    if(has('correnteza')){const gd=mat('#D9A441','gold');A.ears.forEach(e=>{const r=new THREE.Mesh(new THREE.TorusGeometry(.024,.006,8,24),gd);r.position.set(e[0],e[1]-.03,e[2]);r.rotation.y=Math.PI/2;headG.add(r)});
+  if(!fus){const tg=new THREE.Group();tg.name='TIME_'+s.team;root.add(tg);const tgh=new THREE.Group();tgh.name='TIME_'+s.team+'_cabeca';headG.add(tgh);const has=t=>s.team===t||s.team==='fusao';
+    if(has('correnteza')){const gd=mat('#D9A441','gold');A.ears.forEach(e=>{const r=new THREE.Mesh(new THREE.TorusGeometry(.024,.006,8,24),gd);r.position.set(e[0],e[1]-.03,e[2]);r.rotation.y=Math.PI/2;tgh.add(r)});
       const cy=hipsY+L*.96,rx=radiusAt(pts,L*.93)*.78+.02,rz=rx*.85+.01;for(let i=0;i<20;i++){const a=i/20*Math.PI*2;tg.add(mesh(SPH(.015,12,8),mat('#FFFDF7','gloss'),Math.sin(a)*rx,cy-Math.max(0,Math.cos(a))*.05,Math.cos(a)*rz))}
       const cr=new THREE.Mesh(crescentGeo(),gd);cr.position.set(0,cy-.1,rz+.01);tg.add(cr)}
-    if(has('chama')&&!A.crest){const fc=flameCrest(3,s.team==='fusao'?.8:1);fc.position.set(0,A.top-.01,0);headG.add(fc)}
-    if(has('mata')){const lc=leafCrown(A.crownR||.16);lc.position.y=A.hat[1]-.05;headG.add(lc)}
+    if(has('chama')&&!A.crest){const fc=flameCrest(3,s.team==='fusao'?.8:1);fc.position.set(0,A.top-.01,0);tgh.add(fc)}
+    if(has('mata')){const lc=leafCrown(A.crownR||.16);lc.position.y=A.hat[1]-.05;tgh.add(lc)}
     if(has('vendaval')){const ny=hipsY+L*.97,rr=radiusAt(pts,L*.94)*.62+.03,t=new THREE.Mesh(new THREE.TorusGeometry(rr,.035,12,40),mat('#C8202F','fabric'));t.rotation.x=Math.PI/2;t.position.y=ny;t.scale.y=.85;tg.add(t);
       [['#C8202F',0],['#2C5BB0',-.05]].forEach(([c,dy])=>tg.add(new THREE.Mesh(taperTube([[-.06,ny+dy,-rr*.7],[-.2,ny-.05+dy,-rr-.12],[-.32,ny-.02+dy,-rr-.22],[-.45,ny-.12+dy,-rr-.28]],t=>.03*(1-t)+.01,28,10),mat(c,'fabric'))))}
-    if(s.team==='neutro'){const st=new THREE.Mesh(starGeo(),mat(BC.yellow,'glow'));st.position.set(radiusAt(pts,L*.75)*.45,hipsY+L*.78,fz(L*.78)*1.1+.01);st.scale.setScalar(.8);tg.add(st)}}
+    if(s.team==='neutro'){const st=new THREE.Mesh(starGeo(),mat(BC.yellow,'glow'));st.position.set(radiusAt(pts,L*.75)*.45,hipsY+L*.78,fz(L*.78)*1.1+.01);st.scale.setScalar(.8);tg.add(st)};{const a=ajOf(s,'time');ajApply(tg,{...a,rx:0,ry:0,rz:0,k:100});ajApply(tgh,{...a,rx:0,ry:0,rz:0,k:100},1/hs);tint(meshesOf(tg).concat(meshesOf(tgh)),CO.time)}}
 
   /* Boitatá: serpente de fogo sobre a cabeça do Brincante */
   if(mask==='boitata'){const bt=new THREE.Mesh(taperTube([[-.2,.08,-.04],[-.16,.36,0],[0,.46,.02],[.16,.36,.04],[.2,.12,.08]],t=>.04-.015*t,40,14),mat('#E2572A','glow'));bt.name='BRINCANTE_mascara_boitata';headG.add(bt);
@@ -591,7 +597,7 @@ function build(id,s,opt={}){const SY=opt.sy||STY.vinil;MODE.sy=SY;const ck=SY.ey
 
   /* chapéu */
   const hatT=mask==='saci'?'gorro':s.hat;
-  if(hatT&&hatT!=='nenhum'){const hg=makeHat(hatT,T);hg.name=P+'_chapeu_'+hatT;hg.position.set(...A.hat);hg.scale.setScalar(A.hatK);headG.add(hg);hg.updateMatrixWorld(true);tint(meshesOf(hg),CO.chapeu)}
+  if(hatT&&hatT!=='nenhum'){const hw=new THREE.Group(),hg=makeHat(hatT,T);hw.name=P+'_chapeu_'+hatT;hw.add(hg);hw.position.set(...A.hat);hw.scale.setScalar(A.hatK);ajApply(hw,ajOf(s,'chapeu'),1/hs);headG.add(hw);hw.updateMatrixWorld(true);tint(meshesOf(hw),CO.chapeu)}
 
   /* pose */
   const set=(sd,sz,sx,ez,ex)=>{const a=arms[sd];a.sh.rotation.set(sx,0,sd*sz);a.el.rotation.set(ex,0,sd*ez)};
@@ -605,7 +611,7 @@ function build(id,s,opt={}){const SY=opt.sy||STY.vinil;MODE.sy=SY;const ck=SY.ey
   root.rotation.x=lean;root.userData.jump=jump;
 
   /* objeto na mão direita, sempre em pé */
-  if(s.prop&&s.prop!=='nenhum'){const pr=makeProp(s.prop,T);pr.name='PROP_'+s.prop;const hand=arms[-1].hd;hand.add(pr);root.updateMatrixWorld(true);const q=new THREE.Quaternion();hand.getWorldQuaternion(q);pr.quaternion.copy(q.invert());pr.updateMatrixWorld(true);tint(meshesOf(pr),CO.mao)}
+  if(s.prop&&s.prop!=='nenhum'){const pr=new THREE.Group(),pi=makeProp(s.prop,T);pr.add(pi);ajApply(pi,ajOf(s,'mao'),1/SY.hands);pr.name='PROP_'+s.prop;const hand=arms[-1].hd;hand.add(pr);root.updateMatrixWorld(true);const q=new THREE.Quaternion();hand.getWorldQuaternion(q);pr.quaternion.copy(q.invert());pr.updateMatrixWorld(true);tint(meshesOf(pr),CO.mao)}
 
   root.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});
   const headTop=A.top*hs,totalH=hipsY+L+B.neck*h+headTop;
