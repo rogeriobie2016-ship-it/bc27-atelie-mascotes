@@ -15,11 +15,11 @@ const HUMAN={legLen:.55,torsoL:.55,hipR:.19,waistR:.175,chestR:.2,shoulderR:.185
 const SKINS=[{n:'Jambo',skin:'#B9784F'},{n:'Areia',skin:'#D9A47A'},{n:'Canela',skin:'#8A5537'},{n:'Cacau',skin:'#6B4128'},{n:'Retinto',skin:'#4E2E1E'},{n:'Clara',skin:'#EBC3A0'}];
 const ARQ=(nome,sub,role,hair,def)=>({nome,sub,role,head:'humano',headOpt:{hair,hairCol:'#1E1612'},pal:SKINS,body:HUMAN,def});
 const SPECIES={
-  cuca:{nome:'Cuca',sub:'Jacaré reitora',role:'inst',head:'jacare',belly:true,
+  cuca:{nome:'Cuca',sub:'Jacaré da reitoria',role:'inst',head:'jacare',belly:true,
     pal:[{n:'Verde-jacaré',skin:'#4F7B3A',belly:'#DAD59C'},{n:'Oliva',skin:'#6F7A3A',belly:'#E5DBA8'},{n:'Esmeralda',skin:'#0F6B45',belly:'#CDE8B6'},{n:'Cinza-rio',skin:'#5E6E63',belly:'#DAD9C6'}],
     body:{legLen:.5,torsoL:.6,hipR:.2,waistR:.18,chestR:.2,shoulderR:.19,armR:.05,armLen:.5,legR:.066,neck:.05,headK:1.4,legs:2,foot:'claw',hand:'claw',tail:'jacare',gala:'beca'},
     def:{head:1,height:1.05,body:.95,expr:'feliz',outfit:'gala',hat:'capelo',pose:'parado',prop:'livro',glasses:true}},
-  boto:{nome:'Boto',sub:'Anfitrião festeiro',role:'din',head:'boto',belly:true,
+  boto:{nome:'Boto',sub:'Recepção em festa',role:'din',head:'boto',belly:true,
     pal:[{n:'Rosa-boto',skin:'#EE8FAE',belly:'#FAD3DE'},{n:'Coral',skin:'#F2907E',belly:'#FCD6CC'},{n:'Lilás-rio',skin:'#C79BDA',belly:'#EBD8F2'},{n:'Cinza-rosado',skin:'#C7A2AE',belly:'#ECDADF'}],
     body:{legLen:.38,torsoL:.5,hipR:.25,waistR:.26,chestR:.23,shoulderR:.19,armR:.06,armLen:.42,legR:.078,neck:.0,headK:1.4,legs:2,foot:'shoe',hand:'mitten',tail:'boto',gala:'terno-branco'},
     def:{head:1.2,height:.95,body:1.05,expr:'torcendo',outfit:'gincana',hat:'panama',pose:'acenando',prop:'bandeira'}},
@@ -27,7 +27,7 @@ const SPECIES={
     pal:[{n:'Veludo',skin:'#3A2B26',belly:'#EAD8C4'},{n:'Caramelo',skin:'#A8652F',belly:'#F2DFC6'},{n:'Branco',skin:'#EFE8DC',belly:'#F4D6D0'},{n:'Dourado',skin:'#C99A4A',belly:'#F6E7C6'},{n:'Malhado',skin:'#F4EEE4',belly:'#3A2B26'}],
     body:{legLen:.5,torsoL:.6,hipR:.27,waistR:.27,chestR:.27,shoulderR:.23,armR:.068,armLen:.5,legR:.085,neck:.03,headK:1.4,legs:2,foot:'hoof',hand:'mitten',gala:'terno',saia:true},
     def:{expr:'feliz',outfit:'base',hat:'nenhum',pose:'acenando',prop:'nenhum'}},
-  mapinguari:{nome:'Mapinguari',sub:'Guardião gentil',role:'inst',head:'mapinguari',belly:true,
+  mapinguari:{nome:'Mapinguari',sub:'Guarda gentil da mata',role:'inst',head:'mapinguari',belly:true,
     pal:[{n:'Castanho',skin:'#7A4A2C',belly:'#C79A6B'},{n:'Ferrugem',skin:'#9C4A25',belly:'#E0B07C'},{n:'Musgo',skin:'#4E5A33',belly:'#A9B27A'}],
     body:{legLen:.5,torsoL:.7,hipR:.33,waistR:.35,chestR:.34,shoulderR:.27,armR:.095,armLen:.62,legR:.115,neck:0,headK:1.45,legs:2,foot:'paw',hand:'paw',fur:true,gala:'beca'},
     def:{expr:'feliz',outfit:'base',pose:'parado'}},
@@ -35,11 +35,11 @@ const SPECIES={
     pal:[{n:'Jambo',skin:'#A9693F'},{n:'Cacau',skin:'#6B4128'},{n:'Canela',skin:'#8A5537'}],
     body:{legLen:.42,torsoL:.38,hipR:.14,waistR:.13,chestR:.15,shoulderR:.14,armR:.04,armLen:.36,legR:.05,neck:.03,headK:1.45,legs:2,foot:'back',hand:'hand',gala:'terno'},
     def:{head:1.15,height:.95,expr:'piscando',outfit:'base',pose:'correndo'}},
-  iara:{nome:'Iara',sub:'Mãe d’Água elegante',role:'inst',head:'humano',headOpt:{hair:'longo',hairCol:'#1B2140'},
+  iara:{nome:'Iara',sub:'Encanto das águas',role:'inst',head:'humano',headOpt:{hair:'longo',hairCol:'#1B2140'},
     pal:[{n:'Morena',skin:'#A8714A',tail:'#1F8A84'},{n:'Jambo',skin:'#B9784F',tail:'#2C6FB0'},{n:'Cacau',skin:'#6B4128',tail:'#127A5E'}],
-    body:{legLen:.62,torsoL:.52,hipR:.17,waistR:.14,chestR:.17,shoulderR:.16,armR:.04,armLen:.46,legR:.06,neck:.06,headK:1.3,legs:0,hand:'hand',tail:'peixe',gala:'iara'},
+    body:{legLen:.62,torsoL:.52,hipR:.17,waistR:.165,chestR:.17,shoulderR:.16,armR:.04,armLen:.46,legR:.06,neck:.06,headK:1.3,legs:0,hand:'hand',tail:'peixe',gala:'iara'},
     def:{expr:'feliz',outfit:'base',pose:'parado',hat:'tiara'}},
-  saci:{nome:'Saci',sub:'Travesso',role:'din',head:'humano',headOpt:{hair:'curto',hairCol:'#1A1210'},
+  saci:{nome:'Saci',sub:'Pura travessura',role:'din',head:'humano',headOpt:{hair:'curto',hairCol:'#1A1210'},
     pal:[{n:'Retinto',skin:'#4E2E1E'},{n:'Cacau',skin:'#6B4128'},{n:'Canela',skin:'#8A5537'}],
     body:{legLen:.46,torsoL:.4,hipR:.15,waistR:.145,chestR:.165,shoulderR:.155,armR:.043,armLen:.38,legR:.06,neck:.03,headK:1.5,legs:1,foot:'shoe',hand:'hand',gala:'terno'},
     def:{head:1.1,expr:'piscando',outfit:'base',hat:'gorro',pose:'acenando'}},
@@ -54,23 +54,23 @@ const SPECIES={
   onca:{nome:'Onça-pintada',sub:'Força do Pantanal',role:'din',head:'felino',belly:true,spots:true,iris:'#7DB063',pal:[{n:'Pintada',skin:'#E3A23B',belly:'#FFF1D6'},{n:'Preta',skin:'#2A2622',belly:'#4A423A'}],body:{...HUMAN,hipR:.19,chestR:.22,headK:1.45,foot:'paw',hand:'paw',tail:'felino'},def:{expr:'feliz',pose:'correndo'}},
   capivara:{nome:'Capivara',sub:'Calma de todo mundo',role:'inst',head:'capivara',pal:[{n:'Capivara',skin:'#8A6142',belly:'#B58A63'},{n:'Areia',skin:'#A97F57',belly:'#CBA37A'}],body:{...HUMAN,legLen:.38,torsoL:.55,hipR:.28,waistR:.3,chestR:.27,shoulderR:.21,armR:.06,armLen:.4,legR:.08,headK:1.4,fur:true,foot:'paw',hand:'paw'},def:{expr:'feliz',hat:'laranja'}},
   passista:ARQ('Passista de frevo','Recife e Olinda','din','cacheado',{outfit:'frevo',prop:'sombrinha',pose:'torcendo',expr:'torcendo'}),
-  baiana:ARQ('Baiana','Salvador','inst','coque',{outfit:'baiana',hat:'turbante',pose:'acenando',expr:'feliz',color:4}),
-  cangaceiro:ARQ('Cangaceiro','Sertão nordestino','din','curto',{outfit:'cangaceiro',hat:'cangaceiro',expr:'piscando',color:2}),
-  gaucho:ARQ('Gaúcho','Pampa','inst','curto',{outfit:'gaucho',hat:'gaucho',prop:'cuia',expr:'feliz',color:5}),
+  baiana:ARQ('Axé','Salvador, Bahia','inst','coque',{outfit:'baiana',hat:'turbante',pose:'acenando',expr:'feliz',color:4}),
+  cangaceiro:ARQ('Cangaço','Sertão nordestino','din','curto',{outfit:'cangaceiro',hat:'cangaceiro',expr:'piscando',color:2}),
+  gaucho:ARQ('Pampa','Rio Grande do Sul','inst','curto',{outfit:'gaucho',hat:'gaucho',prop:'cuia',expr:'feliz',color:5}),
   capoeirista:ARQ('Capoeirista','Roda de capoeira','din','curto',{outfit:'capoeira',prop:'berimbau',pose:'acenando',expr:'feliz',color:3}),
   sambista:ARQ('Sambista','Carnaval','din','cacheado',{outfit:'carnaval',hat:'flores',prop:'pandeiro',pose:'torcendo',expr:'vitorioso',color:2}),
   caipira:ARQ('Caipira','São João','din','curto',{outfit:'junino',hat:'palha',prop:'bandeirinhas',pose:'acenando',expr:'piscando',color:1}),
-  torcedor:ARQ('Torcedor','Copa do Mundo','din','curto',{outfit:'canarinho',prop:'bola',pose:'torcendo',expr:'vitorioso'}),
+  torcedor:ARQ('Torcida','Copa do Mundo','din','curto',{outfit:'canarinho',prop:'bola',pose:'torcendo',expr:'vitorioso'}),
   mula:{nome:'Mula sem Cabeça',sub:'Fogo que brinca',role:'din',head:'mula',belly:true,iris:'#5A1E0A',pal:[{n:'Castanha',skin:'#7A4A2C',belly:'#C79A6B'},{n:'Preta',skin:'#2E2622',belly:'#7A6A60'},{n:'Branca',skin:'#E9E1D4',belly:'#F6EFE6'}],body:{...HUMAN,hipR:.22,waistR:.22,chestR:.23,shoulderR:.2,armR:.055,legR:.072,headK:1.35,foot:'hoof',hand:'mitten',tail:'lobo'},def:{expr:'feliz',pose:'acenando'}},
-  fulozinha:ARQ('Comadre Fulozinha','Guardiã da mata','din','longo',{outfit:'folhas',hat:'flores',expr:'piscando',lashes:true,color:2}),
+  fulozinha:ARQ('Fulozinha','Guarda da mata','din','longo',{outfit:'folhas',hat:'flores',expr:'piscando',color:2}),
   norato:{nome:'Cobra Norato',sub:'Cobra Grande do rio',role:'inst',head:'cobra',headOpt:{calm:true},belly:true,iris:'#F2C230',pal:[{n:'Rio',skin:'#1F6FA8',belly:'#BFE3F0',tail:'#1F6FA8'},{n:'Esmeralda',skin:'#127A5E',belly:'#C8EBD8',tail:'#127A5E'}],body:{...HUMAN,legLen:.5,legs:0,tail:'serpente',hand:'mitten',headK:1.45},def:{hat:'coroa',expr:'feliz'}},
   uirapuru:{nome:'Uirapuru',sub:'O canto da floresta',role:'din',head:'uirapuru',belly:true,iris:'#2A1A10',pal:[{n:'Uirapuru',skin:'#B5532A',belly:'#F2C9A0',acc:'#6B3A1E'}],body:{...HUMAN,legLen:.34,legR:.056,hipR:.25,waistR:.255,chestR:.24,shoulderR:.2,armR:.058,armLen:.42,neck:.02,headK:1.5,foot:'claw',hand:'mitten',tail:'passaro'},def:{expr:'feliz',prop:'microfone',pose:'acenando'}},
   tucano:{nome:'Tucano',sub:'Bico de festa',role:'din',head:'tucano',belly:true,iris:'#2A1A10',pal:[{n:'Toco',skin:'#1F1F26',belly:'#FFFFFF',acc:'#F28C1E'}],body:{...HUMAN,legLen:.34,legR:.056,hipR:.25,waistR:.255,chestR:.24,shoulderR:.2,armR:.058,armLen:.42,neck:.02,headK:1.5,foot:'claw',hand:'mitten',tail:'passaro'},def:{expr:'feliz',pose:'acenando'}},
   mico:{nome:'Mico-leão-dourado',sub:'Joia da Mata Atlântica',role:'din',head:'mico',belly:true,iris:'#5A2E0A',pal:[{n:'Dourado',skin:'#E58A2B',belly:'#F2C9A0'}],body:{...HUMAN,legLen:.48,headK:1.4,fur:true,foot:'paw',hand:'hand',tail:'felino'},def:{expr:'piscando',pose:'acenando'}},
-  jangadeiro:ARQ('Jangadeiro','Mar do Ceará','din','curto',{outfit:'jangadeiro',hat:'palha',prop:'remo',expr:'feliz',color:2}),
-  vaqueiro:ARQ('Vaqueiro','Gibão de couro','inst','curto',{outfit:'vaqueiro',hat:'couro',expr:'feliz',color:0}),
-  rendeira:ARQ('Rendeira','Renda de bilro','inst','coque',{outfit:'rendeira',prop:'bilro',expr:'feliz',lashes:true,color:1}),
-  maracatu:ARQ('Rainha do Maracatu','Nação de Pernambuco','inst','coque',{outfit:'maracatu',hat:'coroa',prop:'estandarte',expr:'feliz',lashes:true,color:4}),
+  jangadeiro:ARQ('Jangada','Mar do Ceará','din','curto',{outfit:'jangadeiro',hat:'palha',prop:'remo',expr:'feliz',color:2}),
+  vaqueiro:ARQ('Gibão','Vaquejada do sertão','inst','curto',{outfit:'vaqueiro',hat:'couro',expr:'feliz',color:0}),
+  rendeira:ARQ('Renda','Renda de bilro','inst','coque',{outfit:'rendeira',prop:'bilro',expr:'feliz',color:1}),
+  maracatu:ARQ('Realeza do Maracatu','Nação de Pernambuco','inst','coque',{outfit:'maracatu',hat:'coroa',prop:'estandarte',expr:'feliz',color:4}),
   repentista:ARQ('Repentista','Viola e rima','din','curto',{outfit:'chita',hat:'palha',prop:'viola',expr:'piscando',color:3}),
   zero:{nome:'Meu mascote',sub:'Começando do zero',role:'din',head:'humano',pal:[{n:'Minha cor',skin:'#B9784F'}],body:HUMAN,def:{expr:'feliz',outfit:'gincana',pose:'acenando',z:{head:'capivara',corpo:'barrigudo',cauda:'nenhuma',pes:'paw',maos:'paw',pele:'#8A6142',barriga:'#C9A37A',olhos:'#4A2E1E',cabelo:'#2A1E18',pelo:true,manchas:false,brilho:false,barrigaOn:true}}},
   fusao:{nome:'Fusão',sub:'Os quatro times em um',role:'din',head:'humano',headOpt:{hair:'cacheado',hairCol:'#2A1E18'},
@@ -364,7 +364,7 @@ function footMesh(type,r,m,shoe){const g=new THREE.Group();
   return g}
 
 /* ---- chapéus ---- */
-const HATS=[['nenhum','Sem chapéu','Cabeça livre'],['capelo','Capelo','Formatura, Harvard e MIT'],['panama','Panamá branco','Assinatura do Boto'],['bone','Boné do time','Gincana'],['fitas','Chapéu de fitas','Brincante de festa'],['gorro','Gorro vermelho','Assinatura do Saci'],['tiara','Tiara de concha','Iara de gala'],['palha','Chapéu de palha','São João'],['cangaceiro','Chapéu de couro','Sertão'],['turbante','Turbante','Baiana'],['gaucho','Chapéu gaúcho','Pampa'],['couro','Chapéu de vaqueiro','Sertão'],['coroa','Coroa de maracatu','Rei e rainha'],['flores','Coroa de flores','Carnaval'],['laranja','Laranja na cabeça','Capivara raiz'],['bonetras','Boné para trás','Estilo de rua'],['viseira','Viseira','Esporte e sol'],['touca','Touca de pompom','Inverno de Boston'],['bandana','Bandana','Faixa na testa'],['fones','Fones de ouvido','Clima de DJ'],['cartola','Cartola','Mestre de cerimônias'],['festa','Chapéu de festa','Aniversário da BC']];
+const HATS=[['nenhum','Sem chapéu','Cabeça livre'],['capelo','Capelo','Formatura, Harvard e MIT'],['panama','Panamá branco','Assinatura do Boto'],['bone','Boné do time','Gincana'],['fitas','Chapéu de fitas','Brincante de festa'],['gorro','Gorro vermelho','Assinatura do Saci'],['tiara','Tiara de concha','Iara de gala'],['palha','Chapéu de palha','São João'],['cangaceiro','Chapéu de cangaço','Sertão'],['turbante','Turbante','Bahia'],['gaucho','Chapéu do pampa','Rio Grande do Sul'],['couro','Chapéu de gibão','Vaquejada'],['coroa','Coroa de maracatu','Realeza'],['flores','Coroa de flores','Carnaval'],['laranja','Laranja na cabeça','Capivara raiz'],['bonetras','Boné para trás','Estilo de rua'],['viseira','Viseira','Esporte e sol'],['touca','Touca de pompom','Inverno de Boston'],['bandana','Bandana','Faixa na testa'],['fones','Fones de ouvido','Clima de DJ'],['cartola','Cartola','Mestre de cerimônias'],['festa','Chapéu de festa','Aniversário da BC']];
 function makeHat(type,T){const g=new THREE.Group();
   if(type==='capelo'){const dg=mat('#024A2C','fabric'),y=mat(BC.yellow,'fabric');g.add(mesh(new THREE.CylinderGeometry(.13,.145,.08,32),dg,0,.0,0));const b=mesh(new THREE.BoxGeometry(.34,.022,.34),dg,0,.05,0);b.rotation.y=Math.PI/4;g.add(b);
     g.add(mesh(SPH(.018),mat(BC.yellow,'gold'),0,.066,0));const cd=mesh(new THREE.CylinderGeometry(.005,.005,.24,6),y,.12,.064,0);cd.rotation.z=Math.PI/2;g.add(cd);g.add(mesh(new THREE.CylinderGeometry(.005,.005,.14,6),y,.24,-.005,0));g.add(mesh(new THREE.ConeGeometry(.018,.05,10),y,.24,-.09,0))}
@@ -519,7 +519,7 @@ function build(id,s,opt={}){const SY=opt.sy||STY.vinil;const CO=s.cores||{};MODE
       [-1,1].forEach(d=>{const sp=[[.98,.07],[.75,.085],[.45,.09],[.12,.1],[-.4,.11]].map(([t,x])=>{const yy=t>=0?L*t:t*hipsY;return [d*x*w,hipsY+yy,(radiusAt(rp,yy)*.85+.012)/.3]});const st=new THREE.Mesh(taperTube(sp,()=>.032,30,10),mat(BC.yellow,'velvet'));st.scale.z=.3;cl.add(st)});
       const col=new THREE.Mesh(new THREE.TorusGeometry(B.shoulderR*w*.62,.028,12,40),mat('#FFFFFF','fabric'));col.rotation.x=Math.PI/2;col.position.y=hipsY+L*.97;col.scale.y=.85;cl.add(col);
       [-1,1].forEach(sd=>{const a=arms[sd],u=mesh(new THREE.CylinderGeometry(aR*1.5,aR*2,ua*1.02,24,1,true),mat(BC.green,'velvet'),0,-ua/2,0);a.sh.add(u);const f=mesh(new THREE.CylinderGeometry(aR*1.9,aR*2.7,fa*.8,24,1,true),mat(BC.green,'velvet'),0,-fa*.4,0);a.el.add(f)})}
-    else if(gs==='iara'){const gd=mat('#E3AC40','gold');cl.add(shell(.66,.8,1.05,gd));const sa=new THREE.Mesh(new THREE.TorusGeometry(B.chestR*w*1.02,.02,10,48),gd);sa.rotation.set(Math.PI/2,.55,0);sa.position.y=hipsY+L*.55;sa.scale.y=.82;cl.add(sa)}
+    else if(gs==='iara'){const gd=mat('#E3AC40','gold');cl.add(shell(.3,1.0,1.05,mat(pal.tail,'scales')));const sa=new THREE.Mesh(new THREE.TorusGeometry(B.chestR*w*1.02,.02,10,48),gd);sa.rotation.set(Math.PI/2,.55,0);sa.position.y=hipsY+L*.55;sa.scale.y=.82;cl.add(sa)}
     else{const wb=gs==='terno-branco',jc=wb?'#F4EFE3':BC.green,jm=mat(jc,'fabric');cl.add(shell(-.03,1.03,1.065,jm));sleeve(1.22,0,jm,true);
       const pm=mat(wb?'#F4EFE3':'#023A23','fabric');hips(pm);pants(pm,false);
       const sv=new THREE.Shape();sv.moveTo(-.07*w,0);sv.lineTo(.07*w,0);sv.lineTo(0,-.2*h);sv.closePath();const vv=mesh(new THREE.ShapeGeometry(sv),mat(wb?BC.bright:'#FFFFFF','flat'),0,hipsY+L*.98,fz(L*.9)*1.065+.015);vv.rotation.x=-.25;cl.add(vv);
@@ -548,7 +548,7 @@ function build(id,s,opt={}){const SY=opt.sy||STY.vinil;const CO=s.cores||{};MODE
   if(O==='base'){
     if(id==='saci'){const r=mat('#C8202F','fabric');hips(r,1.08);pants(r,true)}
     if(id==='curupira')for(let i=0;i<14;i++){const a=i/14*Math.PI*2,p=new THREE.Group();p.rotation.y=a;p.position.y=hipsY-.02;const l=mesh(SPH(1),mat(i%2?'#2E7D46':'#7DB063','skin'),0,-.08,B.hipR*w*1.02,.035,.13,.012);l.rotation.x=.15;p.add(l);cl.add(p)}
-    if(id==='iara'){cl.add(shell(.66,.8,1.05,mat('#E3AC40','gold')))}
+    if(id==='iara'){cl.add(shell(.3,1.0,1.05,mat(pal.tail,'scales')));const gd=new THREE.Mesh(new THREE.TorusGeometry(radiusAt(pts,L*.3)*1.06,.018,10,48),mat('#E3AC40','gold'));gd.rotation.x=Math.PI/2;gd.position.y=hipsY+L*.3;gd.scale.y=.82;cl.add(gd)}
     if(id==='brincante'){const tx=patchTex();cl.add(shell(.08,1.0,1.045,tx?new THREE.MeshPhysicalMaterial({map:tx,roughness:.8,sheen:.3}):mat(BC.yellow,'fabric')));const lm=mat('#F4EFE3','fabric');hips(lm);pants(lm,false)}}
 
   root.updateMatrixWorld(true);tint(meshesOf(root).filter(o=>!preRoupa.has(o)),CO.roupa);

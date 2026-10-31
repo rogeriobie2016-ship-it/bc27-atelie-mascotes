@@ -1,7 +1,7 @@
 /* ===== Casca do site: rotas por hash, menu lateral, gaveta, trilha e anterior/próximo ===== */
 (function(){
 /* Versão do site: mude aqui quando publicar uma atualização */
-const SITE={versao:'v1.3',data:'30/10/2026',nome:'Ateliê de Mascotes BC27'};
+const SITE={versao:'v1.4',data:'30/10/2026',nome:'Ateliê de Mascotes BC27'};
 const PFX=window.BC_HASH||'#/';
 const $=q=>document.querySelector(q),$$=q=>Array.from(document.querySelectorAll(q));
 
