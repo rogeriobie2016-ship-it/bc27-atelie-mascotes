@@ -78,13 +78,13 @@ const SPECIES={
     body:{...HUMAN,legLen:.5,torsoL:.52},def:{base:'capivara',expr:'vitorioso',outfit:'base',pose:'torcendo'}}
 };
 const STY={
+ pelucia:{dim:'3d',n:'Pelúcia',head:1.32,eye:1.05,legs:.72,hands:1.2,feet:1.25,mouth:.9,skin:'fur',fabric:'fur',button:1,warm:1,fov:28},
  vinil:{dim:'3d',n:'3D vinil',head:1.06,eye:1.1,legs:1,hands:1.12,feet:1.1,mouth:1,fov:28},
  cartoon3d:{dim:'3d',n:'Cartoon 3D',head:1.2,eye:1.25,legs:.82,hands:1.3,feet:1.25,mouth:1.2,skin:'soft',warm:1,iris:.76,pupil:.44,hl2:1,fov:28},
  cartoon2d:{dim:'2d',n:'Cartoon 2D',head:1.2,eye:1.25,legs:.82,hands:1.3,feet:1.25,mouth:1.2,iris:.76,pupil:.44,hl2:1,toon:1,grad:3,outline:2.6,fov:16},
  anime:{dim:'2d',n:'Anime',head:1.12,eye:1.32,eyeY:1.28,legs:1.04,hands:1,feet:.95,mouth:.6,brow:.55,iris:.84,pupil:.3,hl2:1,toon:1,grad:2,outline:1.5,olc:'#3A2633',fov:16},
  chibi:{dim:'3d',n:'Chibi',head:1.6,eye:1.35,legs:.6,hands:1.25,feet:1.3,mouth:1.1,skin:'soft',warm:1,iris:.78,pupil:.46,hl2:1,fov:28},
  massinha:{dim:'3d',n:'Massinha',head:1.15,eye:1.12,legs:.86,hands:1.25,feet:1.25,mouth:1.1,skin:'clay',fabric:'clay',warm:1,fov:28},
- pelucia:{dim:'3d',n:'Pelúcia',head:1.32,eye:1.05,legs:.72,hands:1.2,feet:1.25,mouth:.9,skin:'fur',fabric:'fur',button:1,warm:1,fov:28},
  desenho:{dim:'2d',n:'Desenho (traço)',head:1.2,eye:1.25,legs:.82,hands:1.3,feet:1.25,mouth:1.2,iris:.76,pupil:.44,hl2:1,toon:1,grad:2,outline:3.6,fov:20,post:'desenho'},
  chapado:{dim:'2d',n:'Chapado',head:1.2,eye:1.25,legs:.82,hands:1.3,feet:1.25,mouth:1.2,iris:.76,pupil:.44,hl2:1,toon:1,grad:1,outline:2.8,fov:10},
  rascunho:{dim:'2d',n:'Rascunho a lápis',head:1.2,eye:1.25,legs:.82,hands:1.3,feet:1.25,mouth:1.2,iris:.76,pupil:.44,hl2:1,toon:1,grad:3,outline:0,fov:10,post:'rascunho'},

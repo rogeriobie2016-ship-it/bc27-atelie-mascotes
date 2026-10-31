@@ -37,16 +37,18 @@ const KEY='bc27-atelie-3d-v1',KEYL='bc27-atelie-3d-looks-v1';
 const load=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
 const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 const chars={};Object.keys(SPECIES).forEach(id=>chars[id]=defaultChar(id));
-let state={dir:'dupla',pair:'cuca-boto',custom:{a:'cuca',b:'boto'},solo:false,active:'cuca',cat:'roupa',bg:'verde',cam:'corpo',spin:false,style:'3d',frame:'livre',livre:'capivara',scen:'liso',pick:{folclore:'cuca',fauna:'capivara',cultura:'passista'},last:{'3d':'cartoon3d','2d':'cartoon2d'},chars};
+let state={dir:'dupla',pair:'cuca-boto',custom:{a:'cuca',b:'boto'},solo:false,active:'cuca',cat:'roupa',bg:'verde',cam:'corpo',spin:false,style:'3d',frame:'livre',livre:'capivara',scen:'liso',pick:{folclore:'cuca',fauna:'capivara',cultura:'passista'},last:{'3d':'pelucia','2d':'cartoon2d'},chars};
 const saved=load(KEY,null);if(saved&&saved.chars){Object.keys(SPECIES).forEach(id=>{if(saved.chars[id])chars[id]={...defaultChar(id),...saved.chars[id]}});state={...state,...saved,chars}}
 if(state.dir==='livre'){const c=Object.keys(CATS).find(k=>ROSTER[CATS[k]][1].includes(state.livre));state.dir=c||'folclore';if(c)state.pick[c]=state.livre}
-state.pick={folclore:'cuca',fauna:'capivara',cultura:'passista',...(state.pick||{})};state.last={'3d':'cartoon3d','2d':'cartoon2d',...(state.last||{})};
-if(state.style==='3d')state.style='vinil';if(state.style==='2d')state.style='cartoon3d';if(!STY[state.style])state.style='vinil';
+state.pick={folclore:'cuca',fauna:'capivara',cultura:'passista',...(state.pick||{})};state.last={'3d':'pelucia','2d':'cartoon2d',...(state.last||{})};
+if(state.style==='3d')state.style='pelucia';if(state.style==='2d')state.style='cartoon3d';if(!STY[state.style])state.style='pelucia';
+/* v1.5: pelúcia vira o estilo de abertura, uma vez, também para quem já tinha visitado */
+if(state.estiloV!==15){state.style='pelucia';state.last['3d']='pelucia';state.estiloV=15}
 const hist=[];const pushHist=()=>{hist.push(JSON.stringify(state.chars));if(hist.length>40)hist.shift()};
 const inView=()=>CATS[state.dir]!==undefined?[state.pick[state.dir]]:state.dir==='zero'?['zero']:state.dir==='fusao'?['fusao']:state.dir==='brincante'?['brincante']:(()=>{if(state.pair==='livre'){const c=state.custom||{};return [SPECIES[c.a]?c.a:'cuca',SPECIES[c.b]&&c.b!==c.a?c.b:(c.a==='boto'?'cuca':'boto')]}const p=PAIRS.find(x=>x.id===state.pair)||PAIRS[0];return [p.a,p.b]})();
 const soloOn=()=>state.dir==='dupla'&&!!state.solo;
 if(!inView().includes(state.active))state.active=inView()[0];
-const renderIds=()=>state.frame==='card'||soloOn()?[state.active]:inView();
+const renderIds=()=>soloOn()?[state.active]:inView();
 const persist=()=>save(KEY,state);
 
 /* ---- cena ---- */
@@ -71,7 +73,8 @@ function outlineT(){OUTL.uniforms.t.value=(STY[state.style].outline||2.6)*render
 let HT=null;function halftone(){if(HT)return HT;const c=document.createElement('canvas');c.width=c.height=1024;const x=c.getContext('2d');x.fillStyle=BC.yellow;x.fillRect(0,0,1024,1024);x.fillStyle='rgba(3,99,59,.16)';for(let j=0;j<1024;j+=22)for(let i=0;i<1024;i+=22){x.beginPath();x.arc(i+((j/22)%2)*11,j,3+5*(j/1024),0,7);x.fill()}HT=new THREE.CanvasTexture(c);HT.encoding=THREE.sRGBEncoding;return HT}
 const ov=document.getElementById('ov'),oc=ov.getContext('2d');
 function rr(c,x,y,w,h,r){c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
-function cardRect(W,H){const ch=H*.94,cw=Math.min(W*.94,ch*5/7);return {x:(W-cw)/2,y:(H-ch)/2,w:cw,h:ch}}
+/* card em retrato para um personagem, em paisagem para a dupla */
+function cardRect(W,H,n){const ch=H*.94,cw=Math.min(W*.94,ch*((n||renderIds().length)>1?1.3:5/7));return {x:(W-cw)/2,y:(H-ch)/2,w:cw,h:ch}}
 function wrapLines(c,t,maxW){const ws=String(t).split(/\s+/).filter(Boolean),L=[];let cur='';ws.forEach(w=>{const tt=cur?cur+' '+w:w;if(c.measureText(tt).width>maxW&&cur){L.push(cur);cur=w}else cur=tt});if(cur)L.push(cur);return L.slice(0,4)}
 function stats(id){const s=state.chars[id],b=SPECIES[id].role==='inst'?{Sabedoria:8,Carisma:7,Ginga:4,Energia:5}:{Sabedoria:5,Carisma:8,Ginga:9,Energia:8};
   ({correnteza:['Carisma'],chama:['Energia'],mata:['Sabedoria'],vendaval:['Ginga'],fusao:['Sabedoria','Carisma','Ginga','Energia']}[s.team]||[]).forEach(k=>b[k]++);
@@ -88,19 +91,21 @@ function drawOverlay(){const W=renderer.domElement.width,H=renderer.domElement.h
       oc.beginPath();rr(oc,bx,by,bw,bh,18*k);oc.fill();oc.stroke();oc.fillRect(tx-10*k,tb-6*k,20*k,8*k);
       oc.fillStyle=BC.ink;oc.textAlign='center';oc.textBaseline='middle';lines.forEach((l,j)=>oc.fillText(l,bx+bw/2,by+12*k+lh*(j+.5)))});
     oc.lineWidth=8*k;oc.strokeStyle=BC.ink;oc.strokeRect(5*k,5*k,W-10*k,H-10*k)}
-  if(state.frame==='card'){const id=state.active,s=state.chars[id],T=TEAMS[s.team],C=cardRect(W,H),st=stats(id),rad=22*k,bw=14*k,iw=C.w-2*bw;
+  if(state.frame==='card'){const ids=renderIds(),two=ids.length>1,id=state.active,s=state.chars[id],T=TEAMS[s.team],C=cardRect(W,H,ids.length),K=k*Math.max(.45,Math.min(1.4,C.h/(560*k))),rad=22*K,bw=14*K,iw=C.w-2*bw;
     const alt=(getComputedStyle(document.documentElement).getPropertyValue('--surface-alt')||BC.alt).trim();
     oc.beginPath();oc.rect(0,0,W,H);rr(oc,C.x,C.y,C.w,C.h,rad);oc.fillStyle=alt;oc.fill('evenodd');
-    oc.beginPath();rr(oc,C.x,C.y,C.w,C.h,rad);rr(oc,C.x+bw,C.y+bw,iw,C.h-2*bw,rad*.6);oc.fillStyle=id==='fusao'?BC.green:T.main;oc.fill('evenodd');
-    const bh=58*k;oc.beginPath();rr(oc,C.x+bw,C.y+bw,iw,bh,rad*.6);oc.fillStyle=BC.green;oc.fill();
-    oc.fillStyle=BC.yellow;oc.font=`800 ${28*k}px ${FONT}`;oc.textAlign='left';oc.textBaseline='middle';oc.fillText(String(s.nome).toUpperCase(),C.x+bw+16*k,C.y+bw+bh/2+1*k);
-    const bx=C.x+C.w-bw-34*k,by=C.y+bw+bh/2;oc.beginPath();oc.arc(bx,by,20*k,0,7);oc.fillStyle=id==='fusao'?BC.bright:T.acc;oc.fill();oc.fillStyle=BC.ink;oc.font=`800 ${10*k}px ${FONT}`;oc.textAlign='center';oc.fillText((id==='fusao'?'TODOS':T.el).toUpperCase(),bx,by+1*k);
-    const ph=158*k,py=C.y+C.h-bw-ph;oc.beginPath();rr(oc,C.x+bw,py,iw,ph,rad*.6);oc.fillStyle='#FFFFFF';oc.fill();
-    oc.fillStyle='#4A5D53';oc.font=`600 ${11*k}px ${FONT}`;oc.textAlign='left';oc.fillText(`${SPECIES[id].role==='inst'?'INSTITUCIONAL':'DINÂMICO'} · ${SPECIES[id].sub.toUpperCase()}`,C.x+bw+16*k,py+20*k);
-    const px0=C.x+bw+112*k,pw=(iw-128*k)/10;
-    Object.entries(st).forEach(([n,v],i)=>{const y=py+44*k+i*25*k;oc.fillStyle=BC.ink;oc.font=`700 ${13*k}px ${FONT}`;oc.fillText(n,C.x+bw+16*k,y);
-      for(let j=0;j<10;j++){oc.beginPath();rr(oc,px0+j*pw,y-6*k,pw-4*k,12*k,3*k);oc.fillStyle=j<v?BC.green:'#E3EAE3';oc.fill()}});
-    oc.fillStyle='#4A5D53';oc.font=`600 ${9.5*k}px ${FONT}`;oc.textAlign='center';oc.fillText('BRAZIL CONFERENCE · HARVARD & MIT · 2027',C.x+C.w/2,C.y+C.h-bw-12*k)}}
+    oc.beginPath();rr(oc,C.x,C.y,C.w,C.h,rad);rr(oc,C.x+bw,C.y+bw,iw,C.h-2*bw,rad*.6);oc.fillStyle=two||id==='fusao'?BC.green:T.main;oc.fill('evenodd');
+    const bh=58*K;oc.beginPath();rr(oc,C.x+bw,C.y+bw,iw,bh,rad*.6);oc.fillStyle=BC.green;oc.fill();
+    const badgeW=ids.length*46*K,nome=ids.map(i=>String(state.chars[i].nome).toUpperCase()).join(' + ');let fs=28;oc.font=`800 ${fs*K}px ${FONT}`;while(fs>14&&oc.measureText(nome).width>iw-32*K-badgeW){fs--;oc.font=`800 ${fs*K}px ${FONT}`}
+    oc.fillStyle=BC.yellow;oc.textAlign='left';oc.textBaseline='middle';oc.fillText(nome,C.x+bw+16*K,C.y+bw+bh/2+1*K);
+    ids.forEach((cid,n)=>{const T2=TEAMS[state.chars[cid].team],bx=C.x+C.w-bw-34*K-(ids.length-1-n)*46*K,by=C.y+bw+bh/2;oc.beginPath();oc.arc(bx,by,20*K,0,7);oc.fillStyle=cid==='fusao'?BC.bright:T2.acc;oc.fill();oc.fillStyle=BC.ink;oc.font=`800 ${10*K}px ${FONT}`;oc.textAlign='center';oc.fillText((cid==='fusao'?'TODOS':T2.el).toUpperCase(),bx,by+1*K)});
+    const ph=158*K,py=C.y+C.h-bw-ph,cw=iw/ids.length;oc.beginPath();rr(oc,C.x+bw,py,iw,ph,rad*.6);oc.fillStyle='#FFFFFF';oc.fill();
+    if(two){oc.fillStyle='#E3EAE3';oc.fillRect(C.x+bw+cw-1*K,py+14*K,2*K,ph-28*K)}
+    ids.forEach((cid,n)=>{const x0=C.x+bw+n*cw,st=stats(cid),lab=two?92:112,px0=x0+lab*K,pw=(cw-(lab+16)*K)/10;
+      oc.fillStyle='#4A5D53';oc.font=`600 ${11*K}px ${FONT}`;oc.textAlign='left';oc.textBaseline='middle';let role=`${SPECIES[cid].role==='inst'?'INSTITUCIONAL':'DINÂMICO'} · ${SPECIES[cid].sub.toUpperCase()}`;while(role.length>8&&oc.measureText(role).width>cw-32*K)role=role.slice(0,-2).trim()+'…';oc.fillText(role,x0+16*K,py+20*K);
+      Object.entries(st).forEach(([nm,v],i)=>{const y=py+44*K+i*25*K;oc.fillStyle=BC.ink;oc.font=`700 ${13*K}px ${FONT}`;oc.textAlign='left';oc.fillText(nm,x0+16*K,y);
+        for(let q=0;q<10;q++){oc.beginPath();rr(oc,px0+q*pw,y-6*K,pw-4*K,12*K,3*K);oc.fillStyle=q<v?BC.green:'#E3EAE3';oc.fill()}})});
+    oc.fillStyle='#4A5D53';oc.font=`600 ${9.5*K}px ${FONT}`;oc.textAlign='center';oc.fillText('BRAZIL CONFERENCE · HARVARD & MIT · 2027',C.x+C.w/2,C.y+C.h-bw-12*K)}}
 if(THREE.RoomEnvironment){const pm=new THREE.PMREMGenerator(renderer);scene.environment=pm.fromScene(new THREE.RoomEnvironment(),.04).texture}
 const camera=new THREE.PerspectiveCamera(28,1,.05,80);camera.position.set(0,1.3,5.4);
 const controls=new THREE.OrbitControls(camera,cv);controls.enableDamping=true;controls.minDistance=1;controls.maxDistance=14;controls.maxPolarAngle=Math.PI*.53;controls.target.set(0,.8,0);
@@ -185,10 +190,10 @@ function rebuild(){
 let camGoal=null;
 function setCam(){const n=renderIds().length,act=current.find(c=>c.id===state.active)||current[0];const tall=Math.max(...current.map(c=>c.meta.totalH),1.2);
   const F=Math.tan(14*Math.PI/180)/Math.tan(STY[state.style].fov/2*Math.PI/180),card=state.frame==='card';
-  let tgt=new THREE.Vector3(0,tall*(card?.47:.55),0),pos;
+  let tgt=new THREE.Vector3(0,tall*(card?(n>1?.36:.47):.55),0),pos;
   if(state.cam==='close'&&act){const x=act.root.position.x;tgt=new THREE.Vector3(x,act.meta.headY,0);pos=new THREE.Vector3(x+.25*F,act.meta.headY+.12,1.9*F)}
   else if(state.cam==='costas')pos=new THREE.Vector3(0,tall*.8,-(n>1?6:5.4)*F);
-  else pos=new THREE.Vector3(0,tall*.8,(n>1?6:5.4)*F*(card?1.15:1));
+  else pos=new THREE.Vector3(0,tall*.8,(n>1?6:5.4)*F*(card?(n>1?1.5:1.15):1));
   camGoal={pos,tgt}}
 function resize(){const r=stageEl.getBoundingClientRect();if(!r.width||!r.height)return;renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();sizeRT();outlineT();drawOverlay()}
 new ResizeObserver(resize).observe(stageEl);resize();
