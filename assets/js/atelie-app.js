@@ -37,15 +37,16 @@ const KEY='bc27-atelie-3d-v1',KEYL='bc27-atelie-3d-looks-v1';
 const load=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
 const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 const chars={};Object.keys(SPECIES).forEach(id=>chars[id]=defaultChar(id));
-let state={dir:'dupla',pair:'cuca-boto',active:'cuca',cat:'roupa',bg:'verde',cam:'corpo',spin:false,style:'3d',frame:'livre',livre:'capivara',scen:'liso',pick:{folclore:'cuca',fauna:'capivara',cultura:'passista'},last:{'3d':'cartoon3d','2d':'cartoon2d'},chars};
+let state={dir:'dupla',pair:'cuca-boto',custom:{a:'cuca',b:'boto'},solo:false,active:'cuca',cat:'roupa',bg:'verde',cam:'corpo',spin:false,style:'3d',frame:'livre',livre:'capivara',scen:'liso',pick:{folclore:'cuca',fauna:'capivara',cultura:'passista'},last:{'3d':'cartoon3d','2d':'cartoon2d'},chars};
 const saved=load(KEY,null);if(saved&&saved.chars){Object.keys(SPECIES).forEach(id=>{if(saved.chars[id])chars[id]={...defaultChar(id),...saved.chars[id]}});state={...state,...saved,chars}}
 if(state.dir==='livre'){const c=Object.keys(CATS).find(k=>ROSTER[CATS[k]][1].includes(state.livre));state.dir=c||'folclore';if(c)state.pick[c]=state.livre}
 state.pick={folclore:'cuca',fauna:'capivara',cultura:'passista',...(state.pick||{})};state.last={'3d':'cartoon3d','2d':'cartoon2d',...(state.last||{})};
 if(state.style==='3d')state.style='vinil';if(state.style==='2d')state.style='cartoon3d';if(!STY[state.style])state.style='vinil';
 const hist=[];const pushHist=()=>{hist.push(JSON.stringify(state.chars));if(hist.length>40)hist.shift()};
-const inView=()=>CATS[state.dir]!==undefined?[state.pick[state.dir]]:state.dir==='zero'?['zero']:state.dir==='fusao'?['fusao']:state.dir==='brincante'?['brincante']:(()=>{const p=PAIRS.find(x=>x.id===state.pair)||PAIRS[0];return [p.a,p.b]})();
+const inView=()=>CATS[state.dir]!==undefined?[state.pick[state.dir]]:state.dir==='zero'?['zero']:state.dir==='fusao'?['fusao']:state.dir==='brincante'?['brincante']:(()=>{if(state.pair==='livre'){const c=state.custom||{};return [SPECIES[c.a]?c.a:'cuca',SPECIES[c.b]&&c.b!==c.a?c.b:(c.a==='boto'?'cuca':'boto')]}const p=PAIRS.find(x=>x.id===state.pair)||PAIRS[0];return [p.a,p.b]})();
+const soloOn=()=>state.dir==='dupla'&&!!state.solo;
 if(!inView().includes(state.active))state.active=inView()[0];
-const renderIds=()=>state.frame==='card'?[state.active]:inView();
+const renderIds=()=>state.frame==='card'||soloOn()?[state.active]:inView();
 const persist=()=>save(KEY,state);
 
 /* ---- cena ---- */
@@ -213,9 +214,13 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 function toast(t){const el=$('#toast');el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,1900)}
 function renderHeader(){
   $('#dirs').innerHTML=Object.entries(DIRS).map(([k,d])=>`<button class="dir${state.dir===k?' on':''}" data-dir="${k}" aria-pressed="${state.dir===k}">${d.n}</button>`).join('');
-  $('#pairs').innerHTML=CATS[state.dir]!==undefined?ROSTER[CATS[state.dir]][1].map(id=>`<button class="pair${state.pick[state.dir]===id?' on':''}" data-livre="${id}">${SPECIES[id].nome}</button>`).join(''):state.dir==='dupla'?PAIRS.map(p=>`<button class="pair${state.pair===p.id?' on':''}" data-pair="${p.id}">${SPECIES[p.a].nome} + ${SPECIES[p.b].nome}${p.star?'<small>recomendada</small>':''}</button>`).join(''):'';
+  $('#pairs').innerHTML=CATS[state.dir]!==undefined?ROSTER[CATS[state.dir]][1].map(id=>`<button class="pair${state.pick[state.dir]===id?' on':''}" data-livre="${id}">${SPECIES[id].nome}</button>`).join(''):state.dir==='dupla'?PAIRS.map(p=>`<button class="pair${state.pair===p.id?' on':''}" data-pair="${p.id}">${SPECIES[p.a].nome} + ${SPECIES[p.b].nome}${p.star?'<small>recomendada</small>':''}</button>`).join('')+`<button class="pair${state.pair==='livre'?' on':''}" data-pair="livre">Monte a sua dupla</button>`+pairBar():'';
   $('#pairs').hidden=!(state.dir==='dupla'||CATS[state.dir]!==undefined);document.querySelectorAll('#dimSeg button').forEach(b=>b.classList.toggle('on',b.dataset.dim===STY[state.style].dim));
 }
+/* dupla flexível: troca qualquer lado por qualquer personagem e mostra só quem está em edição */
+function charOpts(cur){return ROSTER.concat([['Outros',['zero']]]).map(([g,ids])=>`<optgroup label="${g}">${ids.map(id=>`<option value="${id}"${id===cur?' selected':''}>${esc(state.chars[id].nome)}</option>`).join('')}</optgroup>`).join('')}
+function pairBar(){const [a,b]=inView();return `<div class="pairbar"><label>Esquerda <select data-side="a" aria-label="Personagem da esquerda">${charOpts(a)}</select></label><button class="pair" data-swap="1" title="Trocar de lado" aria-label="Trocar de lado">⇄</button><label>Direita <select data-side="b" aria-label="Personagem da direita">${charOpts(b)}</select></label><span class="sep"></span><button class="pair${state.solo?'':' on'}" data-solo="0" aria-pressed="${!state.solo}">Ver os dois</button><button class="pair${state.solo?' on':''}" data-solo="1" aria-pressed="${!!state.solo}">Só ${esc(state.chars[state.active].nome)}</button></div>`}
+function setPair(a,b){if(a===b)return;state.custom={a,b};state.pair='livre';if(![a,b].includes(state.active))state.active=a;render()}
 function sw(cols){return `<span class="sw">${cols.map(c=>`<i style="background:${c}"></i>`).join('')}</span>`}
 /* linhas de cor com a paleta BC: principal, detalhe e extra para cada peça */
 function corRows(peca,rows,titulo='Cores BC'){const co=state.chars[state.active].cores||{};
@@ -317,7 +322,7 @@ let dl=null;let paused=false;
 async function saveFile(name,blob){if(dl){await dl.save({filename:name,data:blob});return}const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.rel='noopener';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000)}
 (async()=>{try{if(window.claude&&claude.use)dl=await claude.use('downloads')}catch(e){dl=null}if(dl)renderFicha()})();
 async function exportZip(){if(!THREE.GLTFExporter||!window.JSZip){toast('Exportação indisponível aqui');return}
-  toast('Gerando o 3D...');const grp=new THREE.Group();inView().forEach((id,i,a)=>{const b=build(id,state.chars[id],{sy:STY[state.style]});b.root.position.x=a.length>1?(i?.7:-.7):0;grp.add(b.root)});
+  toast('Gerando o 3D...');const grp=new THREE.Group();(soloOn()?[state.active]:inView()).forEach((id,i,a)=>{const b=build(id,state.chars[id],{sy:STY[state.style]});b.root.position.x=a.length>1?(i?.7:-.7):0;grp.add(b.root)});
   new THREE.GLTFExporter().parse(grp,async gltf=>{try{const z=new JSZip(),name=inView().join('-');
     z.file(`bc27-${name}.gltf`,JSON.stringify(gltf));z.file('LEIA-ME.txt',`BC27 · mascotes ${name}\n\nBlender: Arquivo > Importar > glTF 2.0 e escolha o .gltf.\nCada peça tem nome de slot (corpo, cabeça, rosto, roupa, chapéu, time, objeto) para trocar e refinar.\nEscala: 1 unidade = 1 metro.\n\nFicha:\n${fichaJSON()}`);
     paused=true;let blob;try{blob=await z.generateAsync({type:'blob'})}finally{paused=false}await saveFile(`bc27-mascotes-${name}.zip`,blob);toast('Arquivo baixado')}catch(e){toast(e&&e.code==='declined'?'Download cancelado':'Não foi possível salvar')}},
@@ -330,7 +335,11 @@ document.querySelector('.app header').addEventListener('click',e=>{const b=e.tar
   if(b.dataset.dir){state.dir=b.dataset.dir;state.active=inView()[0];if(state.dir==='zero')state.cat='forma';render();if(window.onAtelieDir)onAtelieDir(state.dir)}
   if(b.dataset.livre){state.pick[state.dir]=b.dataset.livre;state.active=b.dataset.livre;render()}
   if(b.dataset.dim){const cur=STY[state.style].dim;if(b.dataset.dim!==cur){state.last[cur]=state.style;state.style=state.last[b.dataset.dim];TC.clear();render()}}
-  if(b.dataset.pair){state.pair=b.dataset.pair;state.active=inView()[0];render()}});
+  if(b.dataset.pair){if(b.dataset.pair==='livre'&&state.pair!=='livre'){const [x,y]=inView();state.custom={a:x,b:y}}state.pair=b.dataset.pair;state.active=inView()[0];render()}
+  if(b.dataset.swap){const [x,y]=inView();setPair(y,x)}
+  if(b.dataset.solo){state.solo=b.dataset.solo==='1';render()}});
+document.querySelector('.app header').addEventListener('change',e=>{const t=e.target;if(!t.dataset.side)return;let [x,y]=inView();const v=t.value;
+  if(t.dataset.side==='a'){if(v===y)y=x;x=v;state.active=x}else{if(v===x)x=y;y=v;state.active=y}setPair(x,y)});
 const ed=$('#editor');let sliding=false,raf=0;
 ed.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
   if(d.set)setC(d.set,d.num?+d.v:d.v);
